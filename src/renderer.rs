@@ -100,16 +100,18 @@ impl FourierRenderer {
                             state.clear();
                             if !is_drawing {
                                 x = 0.0;
-                                self.transforms.learn(Continuous::new(player_drew.clone()));
-                                transforms = self
-                                    .transforms
-                                    .get_data()
-                                    .clone()
-                                    .into_iter()
-                                    .collect::<Vec<_>>();
-                                transforms
-                                    .sort_by(|x, y| x.1.abs().total_cmp(&y.1.abs()).reverse());
-                                player_drew.clear();
+                                if player_drew.len() > 0 {
+                                    self.transforms.learn(Continuous::new(player_drew.clone()));
+                                    transforms = self
+                                        .transforms
+                                        .get_data()
+                                        .clone()
+                                        .into_iter()
+                                        .collect::<Vec<_>>();
+                                    transforms
+                                        .sort_by(|x, y| x.1.abs().total_cmp(&y.1.abs()).reverse());
+                                    player_drew.clear();
+                                }
                             }
                         }
                         Key::F2 => {
@@ -194,7 +196,7 @@ impl FourierRenderer {
                 );
                 self.window.draw_primitives(
                     state.as_slice(),
-                    PrimitiveType::LINE_STRIP,
+                    PrimitiveType::POINTS,
                     &RenderStates::default(),
                 );
 
