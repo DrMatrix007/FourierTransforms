@@ -1,5 +1,6 @@
 use num::Complex;
 
+#[derive(Debug)]
 pub struct IntegrateArgs {
     pub start: f64,
     pub end: f64,

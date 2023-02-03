@@ -1,22 +1,16 @@
-use std::{f64::consts::PI, time::Instant};
 
 use function::IntegrateArgs;
 use num::{
-    complex::{Complex64, ComplexFloat},
     Complex,
 };
 use renderer::FourierRenderer;
-use sfml::{
-    graphics::{Color, PrimitiveType, RenderStates, RenderTarget, Vertex, View},
-    system::{Vector2, Vector2f},
-    window::{Event, Style},
-};
 
 use crate::fourier_transform::FourierTransform;
 
 pub mod fourier_transform;
 pub mod function;
 pub mod renderer;
+pub mod make_continuous;
 
 fn target(x: f64) -> Complex<f64> {
     Complex::new(
@@ -45,9 +39,7 @@ fn main() {
         end: 1.0,
         dx: 0.0001,
     };
-    let size = Vector2 { x: 1.0, y: 1.0 };
-    // println!("{}",(|x:f64|Complex::new(0.0,x*-2.0*PI).exp()).integrate(StepRange::new(0.0,1.0,0.00001)));
-    let f = FourierTransform::new(-1000..1001,target, &args);
+    let f = FourierTransform::new(-1000..1001,target, args);
 
     let renderer = FourierRenderer::new(f);
 
