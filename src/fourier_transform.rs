@@ -9,21 +9,23 @@ pub struct FourierTransform {
 }
 
 impl FourierTransform {
-    pub fn new(range: Range<i128>) -> Self {
-        Self {
+    pub fn new(range: Range<i128>,f: impl Function,args: &IntegrateArgs) -> Self {
+        let mut ans = Self {
             data: range
                 .into_iter()
                 .map(|x| (x, Complex64::default()))
                 .collect(),
-        }
+        };
+        ans.learn(f, args);
+        ans
     }
-    pub fn learn(&mut self, f: impl Function, args: &IntegrateArgs) {
+    fn learn(&mut self, f: impl Function, args: &IntegrateArgs) {
         for (pow, c) in self.data.iter_mut() {
             *c = (|x: f64| {
                  f.calculate(x) * (Complex::new(0.0, -2.0 * PI * (*pow as f64) * x).exp())
             })
             .integrate(args) ;
-            
+
 
         }
     }
@@ -38,5 +40,6 @@ impl Function for FourierTransform {
             .iter()
             .map(|(pow, c)| c * (Complex::new(0.0, *pow as f64 * x * 2.0 * PI).exp()))
             .sum()
+            
     }
 }
