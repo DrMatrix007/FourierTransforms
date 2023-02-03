@@ -100,7 +100,7 @@ impl FourierRenderer {
                             state.clear();
                             if !is_drawing {
                                 x = 0.0;
-                                if player_drew.len() > 0 {
+                                if !player_drew.is_empty() {
                                     self.transforms.learn(Continuous::new(player_drew.clone()));
                                     transforms = self
                                         .transforms
