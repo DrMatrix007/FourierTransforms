@@ -65,6 +65,8 @@ impl FourierRenderer {
         let size_factor = 2.0;
         let mut state = TransformRenderState::default();
 
+        let mut is_points = true;
+
         let mut is_drawing = false;
 
         let mut transforms = self
@@ -122,6 +124,9 @@ impl FourierRenderer {
                                     Vector2f::new(3.0, 3.0),
                                 ));
                             }
+                        },
+                        Key::F3 => {
+                            is_points = !is_points;
                         }
                         Key::Right => speed *= speed_factor,
                         Key::Left => speed /= speed_factor,
@@ -196,7 +201,7 @@ impl FourierRenderer {
                 );
                 self.window.draw_primitives(
                     state.as_slice(),
-                    PrimitiveType::POINTS,
+                    if is_points{ PrimitiveType::POINTS}else {PrimitiveType::LINE_STRIP},
                     &RenderStates::default(),
                 );
 
